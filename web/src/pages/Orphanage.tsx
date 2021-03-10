@@ -1,16 +1,13 @@
 import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { FiClock, FiInfo } from "react-icons/fi";
-import { Marker, TileLayer } from "react-leaflet";
+import { FiClock, FiInfo, FiArrowLeft } from "react-icons/fi";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { useHistory } from 'react-router-dom';
 import L from 'leaflet';
 
-import mapMarkerImg from '../../assets/images/map-marker.svg';
+import mapMarkerImg from '../images/map-marker.svg';
 
-import PrimaryButton from "../../components/PrimaryButton";
-import Sidebar from "../../components/Sidebar";
-import Map from "../../components/Map";
-
-import './styles.css';
+import '../styles/pages/orphanage.css';
 
 const happyMapIcon = L.icon({
   iconUrl: mapMarkerImg,
@@ -18,12 +15,22 @@ const happyMapIcon = L.icon({
   iconSize: [58, 68],
   iconAnchor: [29, 68],
   popupAnchor: [0, -60]
-})
+});
 
 export default function Orphanage() {
+  const { goBack } = useHistory();
+
   return (
     <div id="page-orphanage">
-      <Sidebar />
+      <aside>
+        <img src={mapMarkerImg} alt="Happy" />
+
+        <footer>
+          <button type="button" onClick={goBack}>
+            <FiArrowLeft size={24} color="#FFF" />
+           </button>
+        </footer>
+      </aside>
 
       <main>
         <div className="orphanage-details">
@@ -55,14 +62,21 @@ export default function Orphanage() {
             <p>Presta assistência a crianças de 06 a 15 anos que se encontre em situação de risco e/ou vulnerabilidade social.</p>
 
             <div className="map-container">
-              <Map 
-                interactive={false}
+              <MapContainer 
                 center={[-27.2092052,-49.6401092]} 
                 zoom={16} 
                 style={{ width: '100%', height: 280 }}
+                dragging={false}
+                touchZoom={false}
+                zoomControl={false}
+                scrollWheelZoom={false}
+                doubleClickZoom={false}
               >
+                <TileLayer
+                  url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
                 <Marker interactive={false} icon={happyMapIcon} position={[-27.2092052,-49.6401092]} />
-              </Map>
+              </MapContainer>
 
               <footer>
                 <a href="">Ver rotas no Google Maps</a>
@@ -87,10 +101,10 @@ export default function Orphanage() {
               </div>
             </div>
 
-            <PrimaryButton type="button">
+            <button type="button" className="contact-button">
               <FaWhatsapp size={20} color="#FFF" />
               Entrar em contato
-            </PrimaryButton>
+            </button>
           </div>
         </div>
       </main>
