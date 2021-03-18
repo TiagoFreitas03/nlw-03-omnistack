@@ -9,8 +9,15 @@ import api from '../services/api';
 
 import '../styles/pages/orphanages-map.css';
 
+interface Orphanage {
+	id: number;
+	latitude: number;
+	longitude: number;
+	name: string;
+}
+
 function OrphanagesMap() {
-	const [orphanages, setOrphanages] = useState([]);
+	const [orphanages, setOrphanages] = useState<Orphanage[]>([]);
 
 	useEffect(() => {
 		api.get('orphanages').then(response => {
@@ -45,11 +52,12 @@ function OrphanagesMap() {
 					return (
 						<Marker
 							icon={mapIcon}
-							position={[-23.3072715,-45.9705731]}
+							position={[orphanage.latitude,orphanage.longitude]}
+							key={orphanage.id}
 						>
 							<Popup closeButton={false} minWidth={240} maxWidth={240} className="map-popup">
-								Teste		
-								<Link to="/orphanages/1">			
+								{orphanage.name}		
+								<Link to={`/orphanages/${orphanage.id}`} >			
 									<FiArrowRight size={20} color="#FFF" />
 								</Link>			
 							</Popup>
