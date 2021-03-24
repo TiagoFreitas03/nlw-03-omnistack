@@ -109,7 +109,6 @@ dist
 
 
 .expo/*
-mobile/npm-debug.*
 *.jks
 *.p8
 *.p12
