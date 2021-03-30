@@ -1,12 +1,53 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import mapMarkerImg from '../images/map-marker.png';
 import { RectButton } from 'react-native-gesture-handler';
+import {useRoute} from '@react-navigation/native';
+
+import api from '../services/api';
+
+interface OrphanageDetailsRouteParams {
+  id: number;
+}
+
+interface Orphanage {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  about: string;
+  instructions: string;
+  opening_hours: string;
+  open_on_weekends: boolean;
+  images: Array<{
+    id: number;
+    url: string;
+  }>;
+}
 
 export default function OrphanageDetails() {
+  const route = useRoute();
+  const [orphanage, setOrphanage] = useState<Orphanage>();
+
+  const params = route.params as OrphanageDetailsRouteParams;
+
+  useEffect(() => {
+    api.get(`orphanages/${params.id}`).then(response => {
+      setOrphanage(response.data);
+    })
+  }, [params.id]);
+
+  if (!orphanage) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.description}>Carregando...</Text>
+      </View>
+    )
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imagesContainer}>
