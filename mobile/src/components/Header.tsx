@@ -41,11 +41,11 @@ export default function Header({title, showCancel = true}: HeaderProps) {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 24,
+		padding: 20,
 		backgroundColor: '#f9fafc',
 		borderBottomWidth: 1,
 		borderColor: '#dde3f0',
-		paddingTop: 44,
+		paddingTop: 55,
 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
